@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import LoginPage from "./pages/LoginPage";
 import RouteGuard from "./components/RouteGuard";
 import NotFoundPage from "./pages/NotFoundPage";
+import AlbumPage from "./pages/AlbumPage";
 
 const App = () => {
   return (
@@ -22,6 +23,14 @@ const App = () => {
             element={
               <RouteGuard redirectTo="/login">
                 <HomePage />
+              </RouteGuard>
+            }
+          />
+          <Route
+            path="/album/:albumId"
+            element={
+              <RouteGuard redirectTo="/login">
+                <AlbumPage />
               </RouteGuard>
             }
           />
