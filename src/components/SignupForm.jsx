@@ -12,26 +12,22 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const { signup } = useAuthContext();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
     if (data.password !== data.confirmPassword) {
       return setError("Password does not match Confirm Password");
     }
-    setError(null)
+    setError(null);
 
     try {
-      setLoading(true)
-      await signup(data.email, data.password)
-      navigate("/")
-
+      setLoading(true);
+      await signup(data.email, data.password);
+      navigate("/");
+      
     } catch (err) {
-      setError(err.message)
-      setLoading(false)
+      setError(err.message);
+      setLoading(false);
     }
   };
 
@@ -43,15 +39,6 @@ const SignupForm = () => {
           <p>{error}</p>
         </Alert>
       )}
-      {/* <Form.Group className="mb-3" controlId="signupInput1">
-        <Form.Label>Username</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder=""
-          required
-          {...register("username", { required: true })}
-        />
-      </Form.Group> */}
 
       <Form.Group className="mb-3" controlId="signupInput2">
         <Form.Label>Email</Form.Label>

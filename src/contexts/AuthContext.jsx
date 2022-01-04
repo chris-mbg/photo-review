@@ -1,6 +1,6 @@
 import { createContext, useContext, useState,useEffect } from "react"
 import { auth } from "../firebase"
-import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth"
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
 import { BounceLoader } from "react-spinners"
 
 const AuthContext = createContext()
@@ -14,6 +14,9 @@ const AuthContextProvider = ({ children }) => {
 
   const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password)
 
+  const login = (email, password) => signInWithEmailAndPassword(auth, email, password)
+
+  const logout = () => signOut(auth)
 
 
   useEffect(() => {
@@ -26,7 +29,9 @@ const AuthContextProvider = ({ children }) => {
   const values = {
     currentUser,
     loading,
-    signup
+    signup,
+    login,
+    logout
   }
 
   return (
