@@ -9,6 +9,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
+import { Link } from "react-router-dom";
 
 const AlbumInfo = ({ albumData }) => {
   const { show, handleClose, handleShow } = useModal();
@@ -47,13 +48,15 @@ const AlbumInfo = ({ albumData }) => {
           <span>{albumData.images.length} photos</span>
           <span>Created: {serverTimestampConvert(albumData.createdAt)}</span>
           <span>Reviewed: {albumData.reviewed.length} times</span>
+          <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
           <Button
             size="sm"
             variant="info"
             className="text-white"
             onClick={handleShow}
           >
-            Change album name <FontAwesomeIcon icon={faPen} />
+            <FontAwesomeIcon icon={faPen} />
+            <span className="ms-2">Change album name</span>
           </Button>
         </div>
       </div>
@@ -72,14 +75,6 @@ const AlbumInfo = ({ albumData }) => {
             loading={loading}
           />
         </Modal.Body>
-        {/* <Modal.Footer>
-          <Button size="sm" variant="outline-secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button size="sm" variant="info" className="text-white" onClick={handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer> */}
       </Modal>
     </>
   );

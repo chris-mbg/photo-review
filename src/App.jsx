@@ -7,6 +7,7 @@ import RouteGuard from "./components/RouteGuard";
 import NotFoundPage from "./pages/NotFoundPage";
 import AlbumPage from "./pages/AlbumPage";
 import { ReactQueryDevtools } from "react-query/devtools";
+import ReviewAlbumPage from "./pages/ReviewAlbumPage";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Routes>
           {/* Unprotected routes */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/view/album/:viewId" element={<ReviewAlbumPage />} />
 
           {/* Protected routes */}
           <Route

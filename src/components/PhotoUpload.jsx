@@ -4,10 +4,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const PhotoUpload = ({ children }) => {
-  const [showDropzone, setShowDropzone] = useState(true);
+  const [showDropzone, setShowDropzone] = useState(false);
 
   return (
-    <>
+    <div className="mb-4">
       <div className="text-end">
         <Button
           variant="info"
@@ -30,7 +30,7 @@ const PhotoUpload = ({ children }) => {
       <div className={`${showDropzone ? "" : "d-none"}`}>
         {children}
       </div>
-    </>
+    </div>
   );
 };
 
