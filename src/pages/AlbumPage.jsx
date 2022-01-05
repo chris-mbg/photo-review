@@ -1,14 +1,16 @@
 import { useParams } from "react-router-dom";
 import useAlbum from "../hooks/useAlbum";
 import Alert from "react-bootstrap/Alert";
-import { serverTimestampConvert } from "../utils/serverTimestampConvert";
 import UploadDropzone from "../components/UploadDropzone";
+import AlbumInfo from "../components/AlbumInfo";
+import PhotoGrid from "../components/PhotoGrid";
+import PhotoUpload from "../components/PhotoUpload";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
   const albumQuery = useAlbum(albumId);
 
-  console.log("album data", albumQuery.data);
+  console.log("album data", albumQuery);
 
   if (albumQuery.isError) {
     return (
@@ -32,26 +34,20 @@ const AlbumPage = () => {
 
   return (
     <>
+      {albumQuery.data && <AlbumInfo albumData={albumQuery.data} />}
 
-      {albumQuery.data && (
-        <>
-          <h1 className="text-center">{albumQuery.data.name}</h1>
-          <div className="text-end text-muted">
-            <p>{albumQuery.data.images.length} photos</p>
-            <p>{serverTimestampConvert(albumQuery.data.createdAt)}</p>
-            <p>Reviewed: {albumQuery.data.reviewed.length} times</p>
-          </div>
-        </>
+      <PhotoUpload>
+        <UploadDropzone albumId={albumId} />
+      </PhotoUpload>
+
+      {albumQuery.data && !albumQuery.data.images.length && (
+        <Alert variant="info" className="text-center">
+          No photos added to this album yet...
+        </Alert>
       )}
-
-      <hr />
-
-      <UploadDropzone albumId={albumId} />
-
-
-      <hr />
-      <p>Show all photos in album</p>
-      {albumQuery.data && albumQuery.data.images.map(p => <p>{p.url}</p>)}
+      {albumQuery.data && albumQuery.data.images.length > 0 && (
+        <PhotoGrid photos={albumQuery.data.images} />
+      )}
     </>
   );
 };

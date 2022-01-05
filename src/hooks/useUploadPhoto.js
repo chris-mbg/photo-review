@@ -62,7 +62,7 @@ const useUploadPhoto = (albumId) => {
       const fsImgRef = await addDoc(fsColRef, {
         name: photo.name,
         size: photo.size,
-        type: photo.size,
+        type: photo.type,
         url: photoUrl,
         owner: currentUser.uid,
         path: stRef.fullPath,

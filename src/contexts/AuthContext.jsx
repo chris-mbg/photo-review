@@ -19,8 +19,8 @@ const AuthContextProvider = ({ children }) => {
   const signup = (email, password) =>
     createUserWithEmailAndPassword(auth, email, password);
 
-  const login = (email, password) =>
-    signInWithEmailAndPassword(auth, email, password);
+  const login = (email, password) => signInWithEmailAndPassword(auth, email, password);
+
 
   const logout = () => signOut(auth);
 
