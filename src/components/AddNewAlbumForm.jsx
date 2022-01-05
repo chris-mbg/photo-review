@@ -19,12 +19,10 @@ const AddNewAlbumForm = ({ preselectedImages }) => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("Submit func");
     setError(null);
 
     try {
       setLoading(true);
-      console.log("Trying...", preselectedImages)
 
       const docRef = await addDoc(collection(db, "albums"), {
         name: data.albumName,

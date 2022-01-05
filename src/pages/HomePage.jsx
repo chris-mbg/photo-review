@@ -1,4 +1,5 @@
 import AddNewAlbum from "../components/AddNewAlbum";
+import AlbumOverview from "../components/AlbumOverview";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const HomePage = () => {
@@ -8,7 +9,9 @@ const HomePage = () => {
     <>
       <AddNewAlbum />
 
-      <p>Here be Album Overview component</p>
+      <hr className="border-top border-info my-4"/>
+
+      <AlbumOverview />
     </>
   );
 };

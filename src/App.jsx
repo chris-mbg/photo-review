@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RouteGuard from "./components/RouteGuard";
 import NotFoundPage from "./pages/NotFoundPage";
 import AlbumPage from "./pages/AlbumPage";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 const App = () => {
   return (
@@ -38,6 +39,8 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Container>
+
+      <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />
     </>
   );
 };
