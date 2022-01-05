@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const PhotoUpload = ({ children }) => {
   const [showDropzone, setShowDropzone] = useState(true);
@@ -14,11 +14,22 @@ const PhotoUpload = ({ children }) => {
           className="text-white"
           onClick={() => setShowDropzone(!showDropzone)}
         >
-          <FontAwesomeIcon icon={faPlus} />
-          <span className="ms-2">Upload Photo</span>
+          {showDropzone ? (
+            <>
+              <FontAwesomeIcon icon={faTimes} />
+              <span className="ms-2">Close</span>
+            </>
+          ) : (
+            <>
+              <FontAwesomeIcon icon={faPlus} />
+              <span className="ms-2">Add New Photo</span>
+            </>
+          )}
         </Button>
       </div>
-      {showDropzone && children}
+      <div className={`${showDropzone ? "" : "d-none"}`}>
+        {children}
+      </div>
     </>
   );
 };

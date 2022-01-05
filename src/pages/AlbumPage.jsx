@@ -5,10 +5,12 @@ import UploadDropzone from "../components/UploadDropzone";
 import AlbumInfo from "../components/AlbumInfo";
 import PhotoGrid from "../components/PhotoGrid";
 import PhotoUpload from "../components/PhotoUpload";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
   const albumQuery = useAlbum(albumId);
+  const { currentUser } = useAuthContext();
 
   console.log("album data", albumQuery);
 
@@ -28,6 +30,17 @@ const AlbumPage = () => {
         <p>
           <strong>Loading...</strong>
         </p>
+      </Alert>
+    );
+  }
+
+  if (albumQuery.data.owner !== currentUser.uid) {
+    return (
+      <Alert variant="danger">
+        <p>
+          <strong>Error!</strong>
+        </p>
+        This album does not belong to you...
       </Alert>
     );
   }
