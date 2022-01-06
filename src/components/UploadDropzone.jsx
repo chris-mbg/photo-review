@@ -21,7 +21,7 @@ const UploadDropzone = ({ albumId }) => {
 
     uploadPhoto.upload(acceptedFiles[0])
 
-  });
+  },[]);
 
   const {
     getRootProps,
