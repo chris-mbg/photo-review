@@ -1,9 +1,7 @@
 import AddNewAlbum from "../components/AddNewAlbum";
 import AlbumOverview from "../components/AlbumOverview";
-import { useAuthContext } from "../contexts/AuthContext";
 
 const HomePage = () => {
-  const { currentUser } = useAuthContext();
 
   return (
     <>

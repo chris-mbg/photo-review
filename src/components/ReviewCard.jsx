@@ -2,7 +2,6 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faCheck,
   faThumbsUp,
   faThumbsDown,
 } from "@fortawesome/free-solid-svg-icons";

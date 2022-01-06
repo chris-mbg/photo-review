@@ -68,6 +68,7 @@ const AlbumInfo = ({ albumData }) => {
           <Modal.Title>Change album name</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {error && <p>{error}</p>}
           <AddNewAlbumForm
             editMode={true}
             albumName={albumData.name}

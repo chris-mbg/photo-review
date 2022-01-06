@@ -6,7 +6,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import Alert from "react-bootstrap/Alert";
 

@@ -1,7 +1,5 @@
 import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import Alert from "react-bootstrap/Alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faImage,
@@ -23,7 +21,7 @@ const UploadDropzone = ({ albumId }) => {
 
     uploadPhoto.upload(acceptedFiles[0])
 
-  }, []);
+  });
 
   const {
     getRootProps,
