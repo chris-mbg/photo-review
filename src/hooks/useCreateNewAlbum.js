@@ -1,7 +1,14 @@
 import { useState } from "react";
 import { useAuthContext } from "../contexts/AuthContext";
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 
 const useCreateNewAlbum = () => {
@@ -9,7 +16,11 @@ const useCreateNewAlbum = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const create = async (albumName, preselectedImages = null) => {
+  const create = async (
+    albumName,
+    preselectedImages = null,
+    reviewOptions = {}
+  ) => {
     setError(null);
 
     try {
@@ -17,26 +28,34 @@ const useCreateNewAlbum = () => {
 
       const docRef = await addDoc(collection(db, "albums"), {
         name: albumName,
-        images: preselectedImages ? preselectedImages : [],
+        images: preselectedImages ?? [],
         viewId: uuid(),
-        owner: currentUser.uid,
+        owner: reviewOptions.reviewedAlbumOwner ?? currentUser.uid,
         createdAt: serverTimestamp(),
         reviewed: [],
       });
 
       console.log("doc ref", docRef);
-      setLoading(false);
-      return docRef
 
+      // When reviewing --> add timestamp to the reviewed album
+      if (reviewOptions.review) {
+        console.log("Adding review timestamp...")
+        console.log("review opts", reviewOptions)
+        const albumRef = doc(db, "albums", reviewOptions.reviewedAlbumId);
+        await updateDoc(albumRef, { reviewed: arrayUnion(new Date().toLocaleString("sv-SV")) });
+      }
+
+      setLoading(false);
+      return docRef;
     } catch (err) {
+
       setError(err.message);
       setLoading(false);
-      return null
+      return null;
     }
+  };
 
-  }
+  return { loading, error, create };
+};
 
-  return { loading, error, create }
-}
-
-export default useCreateNewAlbum
+export default useCreateNewAlbum;

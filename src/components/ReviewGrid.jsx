@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import { SRLWrapper } from "simple-react-lightbox";
 import { useState } from "react";
 
-const ReviewGrid = ({ photos, onReviewSend }) => {
+const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [discardedPhotos, setDiscardedPhotos] = useState([]);
 
@@ -40,10 +40,12 @@ const ReviewGrid = ({ photos, onReviewSend }) => {
   };
 
   const handleSendClick = () => {
-    if(photos.length === selectedPhotos.length + discardedPhotos.length) {
-      onReviewSend(selectedPhotos)
-    } else { return }
-  }
+    if (photos.length === selectedPhotos.length + discardedPhotos.length) {
+      onReviewSend(selectedPhotos);
+    } else {
+      return;
+    }
+  };
 
   return (
     <>
@@ -57,9 +59,16 @@ const ReviewGrid = ({ photos, onReviewSend }) => {
             Left to review:{" "}
             {photos.length - (selectedPhotos.length + discardedPhotos.length)}
           </p>
-          {photos.length === selectedPhotos.length + discardedPhotos.length && (
-            <Button variant="info" onClick={handleSendClick}>Confirm review</Button>
-          )}
+
+          <Button
+            variant="info"
+            onClick={handleSendClick}
+            disabled={
+              !(photos.length === selectedPhotos.length + discardedPhotos.length) || loading
+            }
+          >
+            Confirm review
+          </Button>
         </div>
       )}
       {photos && (
