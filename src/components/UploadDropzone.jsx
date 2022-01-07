@@ -8,11 +8,13 @@ import {
   faFileUpload,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
-import useUploadPhoto from "../hooks/useUploadPhoto";
+//import useUploadPhoto from "../hooks/useUploadPhoto";
+import useUploadPhotos from "../hooks/useUploadPhotos";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import Alert from "react-bootstrap/Alert";
 
 const UploadDropzone = ({ albumId }) => {
-
-  const uploadPhoto = useUploadPhoto(albumId)
+  const uploadPhotos = useUploadPhotos(albumId);
 
   const onDrop = useCallback((acceptedFiles) => {
     console.log("Got files", acceptedFiles);
@@ -21,8 +23,8 @@ const UploadDropzone = ({ albumId }) => {
       return;
     }
 
-    uploadPhoto.upload(acceptedFiles[0])
-
+    //uploadPhoto.upload(acceptedFiles[0])
+    uploadPhotos.uploadAll(acceptedFiles);
   }, []);
 
   const {
@@ -35,7 +37,7 @@ const UploadDropzone = ({ albumId }) => {
   } = useDropzone({
     accept: "image/gif, image/jpeg, image/png, image/webp",
     onDrop,
-    maxFiles: 1,
+    // maxFiles: 4,
   });
 
   return (
@@ -74,17 +76,19 @@ const UploadDropzone = ({ albumId }) => {
         </div>
       )}
 
-      {/* {uploadImage.uploadProgress !== null && (
-				<ProgressBar
-					variant="success"
-					striped
-					animated
-					now={uploadImage.uploadProgress}
-				/>
-			)}
+      {uploadPhotos.uploadedBytes !== null && (
+        <ProgressBar
+          variant="info"
+          striped
+          animated
+          now={uploadPhotos.uploadedBytes/uploadPhotos.uploadTotal * 100}
+        />
+      )}
 
-      {uploadImage.isError && <Alert variant="warning">{uploadImage.error}</Alert>}
-      {uploadImage.isSuccess && <Alert variant="success">File upload, great success!</Alert>} */}
+      {uploadPhotos.isError && (
+        <Alert variant="warning">{uploadPhotos.error}</Alert>
+      )}
+      {uploadPhotos.isSuccess && <Alert variant="success">Uploaded!</Alert>}
     </div>
   );
 };

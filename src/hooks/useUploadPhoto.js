@@ -82,6 +82,10 @@ const useUploadPhoto = (albumId) => {
       setIsSuccess(true)
       setIsUploading(false)
 
+      setTimeout(() => {
+        resetInternalState()
+      }, 2000)
+
     } catch (err) {
       setIsError(true);
       setError(err.message);
