@@ -5,13 +5,12 @@ import Alert from "react-bootstrap/Alert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faImage,
+  faImages,
   faFileUpload,
   faBan,
 } from "@fortawesome/free-solid-svg-icons";
 //import useUploadPhoto from "../hooks/useUploadPhoto";
 import useUploadPhotos from "../hooks/useUploadPhotos";
-import ProgressBar from "react-bootstrap/ProgressBar";
-import Alert from "react-bootstrap/Alert";
 
 const UploadDropzone = ({ albumId }) => {
   const uploadPhotos = useUploadPhotos(albumId);
@@ -60,7 +59,7 @@ const UploadDropzone = ({ albumId }) => {
         )
       ) : (
         <p className="fs-2">
-          <FontAwesomeIcon icon={faImage} />
+          <FontAwesomeIcon icon={faImages} />
         </p>
       )}
 

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const PhotoUpload = ({ children }) => {
-  const [showDropzone, setShowDropzone] = useState(false);
+  const [showDropzone, setShowDropzone] = useState(true);
 
   return (
     <div className="mb-4">
@@ -22,7 +22,7 @@ const PhotoUpload = ({ children }) => {
           ) : (
             <>
               <FontAwesomeIcon icon={faPlus} />
-              <span className="ms-2">Add New Photo</span>
+              <span className="ms-2">Add New Photos</span>
             </>
           )}
         </Button>

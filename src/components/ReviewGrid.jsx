@@ -73,7 +73,7 @@ const ReviewGrid = ({ photos, onReviewSend, loading }) => {
       )}
       {photos && (
         <SRLWrapper>
-          <Row xs={2} md={3} xl={4} className="g-4">
+          <Row xs={2} md={3} xl={4} xxl={5} className="g-4">
             {photos.map((p) => (
               <Col key={p.imgId}>
                 <ReviewCard

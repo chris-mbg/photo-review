@@ -5,7 +5,7 @@ import { SRLWrapper } from "simple-react-lightbox";
 import { useState, useEffect } from "react";
 import AddNewFromSelected from "./AddNewFromSelected";
 
-const PhotoGrid = ({ photos }) => {
+const PhotoGrid = ({ photos, albumId }) => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
   const handleSelectClick = (photo) => {
@@ -31,11 +31,12 @@ const PhotoGrid = ({ photos }) => {
 
       {photos && (
         <SRLWrapper>
-          <Row xs={2} md={3} xl={4} className="g-4">
+          <Row xs={2} md={3} xl={4} xxl={5} className="g-4">
             {photos.map((p) => (
               <Col key={p.imgId}>
                 <PhotoCard
                   photo={p}
+                  albumId={albumId}
                   onButtonClick={handleSelectClick}
                   selected={selectedPhotos.find((obj) => obj.imgId === p.imgId)}
                 />

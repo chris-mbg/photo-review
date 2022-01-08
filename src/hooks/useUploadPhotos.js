@@ -72,10 +72,7 @@ const useUploadPhotos = (albumId) => {
             });
             resolve();
           } catch (err) {
-            setIsError(true);
-            setError(err.message);
-            setIsSuccess(false);
-            //setIsUploading(false);
+            reject(err)
           }
         }
       );
@@ -107,7 +104,12 @@ const useUploadPhotos = (albumId) => {
       setUploadedBytes(null);
       setIsSuccess(true);
       setIsUploading(false);
-    });
+    }).catch(err => {
+      setIsError(true);
+      setError(err.message);
+      setIsSuccess(false);
+      setIsUploading(false)
+    }) ;
   };
 
   return {

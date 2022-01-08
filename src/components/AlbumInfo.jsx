@@ -1,6 +1,6 @@
 import { serverTimestampConvert } from "../utils/serverTimestampConvert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import useModal from "../hooks/useModal";
@@ -9,14 +9,23 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useDeleteAlbum from "../hooks/useDeleteAlbum";
 
 const AlbumInfo = ({ albumData }) => {
+  const navigate = useNavigate()
   const { show, handleClose, handleShow } = useModal();
+  const deleteAlbum = useDeleteAlbum(albumData._id)
 
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const { currentUser } = useAuthContext();
+
+  const handleDeleteAlbum = async () => {
+    console.log("delete me album")
+    deleteAlbum.destroy()
+    navigate("/")
+  }
 
   const handleEditAlbumNameSubmit = async (data) => {
     setError(null);
@@ -57,6 +66,15 @@ const AlbumInfo = ({ albumData }) => {
           >
             <FontAwesomeIcon icon={faPen} />
             <span className="ms-2">Change album name</span>
+          </Button>
+          <Button
+            size="sm"
+            variant="outline-danger"
+            className="mt-2"
+            onClick={handleDeleteAlbum}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+            <span className="ms-2">Delete album</span>
           </Button>
         </div>
       </div>

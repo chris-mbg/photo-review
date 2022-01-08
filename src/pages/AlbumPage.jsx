@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAlbum from "../hooks/useAlbum";
 import Alert from "react-bootstrap/Alert";
 import UploadDropzone from "../components/UploadDropzone";
@@ -11,8 +11,10 @@ const AlbumPage = () => {
   const { albumId } = useParams();
   const albumQuery = useAlbum(albumId);
   const { currentUser } = useAuthContext();
+  const navigate = useNavigate()
 
   console.log("album data", albumQuery);
+
 
   if (albumQuery.isError) {
     return (
@@ -34,6 +36,12 @@ const AlbumPage = () => {
     );
   }
 
+  if(albumQuery.data === undefined) {
+    // when deleting album
+    navigate("/")
+  }
+
+  
   if (albumQuery.data.owner !== currentUser.uid) {
     return (
       <Alert variant="danger">
@@ -55,11 +63,11 @@ const AlbumPage = () => {
 
       {albumQuery.data && !albumQuery.data.images.length && (
         <Alert variant="info" className="text-center">
-          No photos added to this album yet...
+          No photos in this album, add some!
         </Alert>
       )}
       {albumQuery.data && albumQuery.data.images.length > 0 && (
-        <PhotoGrid photos={albumQuery.data.images} />
+        <PhotoGrid photos={albumQuery.data.images} albumId={albumId} />
       )}
     </>
   );
