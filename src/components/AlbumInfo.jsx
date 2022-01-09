@@ -67,7 +67,7 @@ const AlbumInfo = ({ albumData }) => {
             <FontAwesomeIcon icon={faPen} />
             <span className="ms-2">Change album name</span>
           </Button>
-          <Button
+          {/* <Button
             size="sm"
             variant="outline-danger"
             className="mt-2"
@@ -75,7 +75,7 @@ const AlbumInfo = ({ albumData }) => {
           >
             <FontAwesomeIcon icon={faTrash} />
             <span className="ms-2">Delete album</span>
-          </Button>
+          </Button> */}
         </div>
       </div>
 
