@@ -1,16 +1,16 @@
+import { Link, useNavigate } from "react-router-dom";
 import { serverTimestampConvert } from "../utils/serverTimestampConvert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import useModal from "../hooks/useModal";
-import AddNewAlbumForm from "./AddNewAlbumForm";
-import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import useDeleteAlbum from "../hooks/useDeleteAlbum";
+import useModal from "../hooks/useModal";
 import useEditAlbumName from "../hooks/useEditAlbumName";
+import AddNewAlbumForm from "./AddNewAlbumForm";
+import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import ModalComponent from "./ModalComponent";
 
 const AlbumInfo = ({ albumData }) => {
   const navigate = useNavigate();
@@ -20,13 +20,11 @@ const AlbumInfo = ({ albumData }) => {
   const deleteAlbum = useDeleteAlbum();
 
   const handleDeleteAlbum = async () => {
-    console.log("delete me album");
     await deleteAlbum.destroy(albumData._id);
     navigate("/");
   };
 
   const handleEditAlbumNameSubmit = async (data) => {
-    console.log("Edit name: ", data.albumName);
     await editAlbumName.edit(albumData._id, data.albumName);
     handleClose();
   };
@@ -54,7 +52,10 @@ const AlbumInfo = ({ albumData }) => {
         <Row xs={1} sm={2} lg={2} className="text-muted border rounded g-2 p-1">
           <Col>
             <Col>
-              <small>{albumData.images.length} {albumData.images.length === 1 ? "photo" : "photos" }</small>
+              <small>
+                {albumData.images.length}{" "}
+                {albumData.images.length === 1 ? "photo" : "photos"}
+              </small>
             </Col>
             <Col>
               <small>
@@ -109,19 +110,18 @@ const AlbumInfo = ({ albumData }) => {
         </Row>
       </Col>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Change album name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <AddNewAlbumForm
-            editMode={true}
-            albumName={albumData.name}
-            submitFunc={handleEditAlbumNameSubmit}
-            loading={editAlbumName.isEditing}
-          />
-        </Modal.Body>
-      </Modal>
+      <ModalComponent
+        show={show}
+        onHide={handleClose}
+        title="Change album name"
+      >
+        <AddNewAlbumForm
+          editMode={true}
+          albumName={albumData.name}
+          submitFunc={handleEditAlbumNameSubmit}
+          loading={editAlbumName.isEditing}
+        />
+      </ModalComponent>
     </div>
   );
 };

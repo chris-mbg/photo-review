@@ -1,15 +1,14 @@
+import { useState } from "react";
 import PhotoCard from "./PhotoCard";
+import AddNewFromSelected from "./AddNewFromSelected";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { SRLWrapper } from "simple-react-lightbox";
-import { useState, useEffect } from "react";
-import AddNewFromSelected from "./AddNewFromSelected";
 
 const PhotoGrid = ({ photos, albumId }) => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
 
   const handleSelectClick = (photo) => {
-    console.log("select click", photo);
     if (selectedPhotos.find((obj) => obj.imgId === photo.imgId)) {
       setSelectedPhotos(
         selectedPhotos.filter((obj) => obj.imgId !== photo.imgId)
@@ -18,10 +17,6 @@ const PhotoGrid = ({ photos, albumId }) => {
       setSelectedPhotos([...selectedPhotos, photo]);
     }
   };
-
-  useEffect(() => {
-    console.log(selectedPhotos);
-  }, [selectedPhotos]);
 
   return (
     <>

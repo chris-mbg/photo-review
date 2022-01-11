@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
 import useModal from "../hooks/useModal";
-import ReviewGrid from "../components/ReviewGrid";
 import useReviewAlbum from "../hooks/useReviewAlbum";
-import Modal from "react-bootstrap/Modal";
+import ReviewGrid from "../components/ReviewGrid";
 import Alert from "react-bootstrap/Alert";
 import ErrorAlert from "../components/ErrorAlert";
 import LoadingAlert from "../components/LoadingAlert";
+import ModalComponent from "../components/ModalComponent";
 
 const ReviewAlbumPage = () => {
   const { viewId } = useParams();
@@ -30,11 +30,11 @@ const ReviewAlbumPage = () => {
   };
 
   if (albumQuery.isError) {
-    return <ErrorAlert errMsg={albumQuery.error}/>;
+    return <ErrorAlert errMsg={albumQuery.error} />;
   }
 
   if (albumQuery.isLoading) {
-    return <LoadingAlert />
+    return <LoadingAlert />;
   }
 
   return (
@@ -54,22 +54,21 @@ const ReviewAlbumPage = () => {
         </>
       )}
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-center">Review confirm</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          {createAlbum.error ? (
-            <ErrorAlert errMsg={createAlbum.error} />
-          ) : (
-            <Alert variant="success">
-              <p>
-                Your review of the album {albumQuery.data[0].name} is now sent!
-              </p>
-            </Alert>
-          )}
-        </Modal.Body>
-      </Modal>
+      <ModalComponent
+        title="Review confirm"
+        show={show}
+        handleClose={handleClose}
+      >
+        {createAlbum.error ? (
+          <ErrorAlert errMsg={createAlbum.error} />
+        ) : (
+          <Alert variant="success">
+            <p>
+              Your review of the album {albumQuery.data[0].name} is now sent!
+            </p>
+          </Alert>
+        )}
+      </ModalComponent>
     </>
   );
 };

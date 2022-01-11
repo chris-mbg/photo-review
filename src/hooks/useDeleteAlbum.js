@@ -36,11 +36,9 @@ const useDeleteAlbum = () => {
       const promises = [];
       albumDoc.data().images.forEach((img) => {
         promises.push(deletePhoto.destroy(img));
-        console.log("PromisesArr", promises);
       });
-      console.log("After forEach, before promises.all");
+
       Promise.all(promises).then(async () => {
-        console.log("In then for promise.all");
         // delete album doc when all photos are deleted from storage/db or not
         await deleteDoc(albumRef);
         setIsDeleting(false);

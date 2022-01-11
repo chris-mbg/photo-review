@@ -1,15 +1,14 @@
-import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import AddNewAlbumForm from "./AddNewAlbumForm";
-import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
-import { v4 as uuid } from "uuid";
-import Alert from "react-bootstrap/Alert";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import AddNewAlbumForm from "./AddNewAlbumForm";
 import ErrorAlert from "./ErrorAlert";
+import Button from "react-bootstrap/Button";
+import { v4 as uuid } from "uuid";
 
 const AddNewAlbum = () => {
   const preselectedImages = null;
@@ -36,7 +35,6 @@ const AddNewAlbum = () => {
         reviewed: [],
       });
 
-      console.log("doc ref", docRef);
       setLoading(false);
       navigate(`/album/${docRef.id}`);
     } catch (err) {

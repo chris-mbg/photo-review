@@ -15,7 +15,6 @@ const AlbumOverview = () => {
 
   const handleDeleteAlbum = async (e, albumId) => {
     e.stopPropagation()
-    console.log("delete me album");
     await deleteAlbum.destroy(albumId);
   };
 
