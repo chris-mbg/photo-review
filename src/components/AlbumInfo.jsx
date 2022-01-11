@@ -47,14 +47,14 @@ const AlbumInfo = ({ albumData }) => {
 
   return (
     <div className="d-flex flex-column flex-nowrap">
-      <h1 className="logo-text text-center mb-3 order-lg-2">
+      <h1 className="logo-text text-center mb-3 order-lg-2 mt-lg-3">
         {albumData.name}
       </h1>
       <Col xs={12} lg={{ span: 4, offset: 8 }}>
         <Row xs={1} sm={2} lg={2} className="text-muted border rounded g-2 p-1">
           <Col>
             <Col>
-              <small>{albumData.images.length} photos</small>
+              <small>{albumData.images.length} {albumData.images.length === 1 ? "photo" : "photos" }</small>
             </Col>
             <Col>
               <small>

@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
+import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
+import useModal from "../hooks/useModal";
+import ReviewGrid from "../components/ReviewGrid";
 import useReviewAlbum from "../hooks/useReviewAlbum";
 import Alert from "react-bootstrap/Alert";
 import Modal from "react-bootstrap/Modal";
-import ReviewGrid from "../components/ReviewGrid";
-import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
-import useModal from "../hooks/useModal";
 
 const ReviewAlbumPage = () => {
   const { viewId } = useParams();
@@ -27,7 +27,7 @@ const ReviewAlbumPage = () => {
       reviewedAlbumOwner: albumQuery.data[0].owner,
     });
 
-    handleShow(true)
+    handleShow(true);
   };
 
   if (albumQuery.isError) {
@@ -54,10 +54,11 @@ const ReviewAlbumPage = () => {
     <>
       {albumQuery.data && (
         <>
-          <h1>Let's review!</h1>
-          <p>
-            Choose which photos from {albumQuery.data[0].name} you like best!
+          <h1 className="logo-text text-center">Let's review!</h1>
+          <p className="text-center">
+            Choose which photos from {albumQuery.data[0].name} you want to keep.
           </p>
+
           <ReviewGrid
             photos={albumQuery.data[0].images}
             onReviewSend={handleReviewConfirm}
@@ -65,7 +66,7 @@ const ReviewAlbumPage = () => {
           />
         </>
       )}
-      
+
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title className="text-center">Review confirm</Modal.Title>

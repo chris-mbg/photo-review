@@ -1,9 +1,9 @@
+import { useState } from "react";
 import ReviewCard from "./ReviewCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { SRLWrapper } from "simple-react-lightbox";
-import { useState } from "react";
 
 const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
@@ -50,26 +50,34 @@ const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   return (
     <>
       {photos && (
-        <div>
-          <p>Info</p>
-          <p>
-            Liked: {selectedPhotos.length} of {photos.length}
-          </p>
-          <p>
-            Left to review:{" "}
-            {photos.length - (selectedPhotos.length + discardedPhotos.length)}
-          </p>
-
-          <Button
-            variant="info"
-            onClick={handleSendClick}
-            disabled={
-              !(photos.length === selectedPhotos.length + discardedPhotos.length) || loading
-            }
-          >
-            Confirm review
-          </Button>
-        </div>
+        <Row xs={2} className="text-center g-2 my-2 my-md-4">
+          <Col>
+            <span>
+              <strong>Liked:</strong> {selectedPhotos.length} of {photos.length}
+            </span>
+          </Col>
+          <Col>
+            <span>
+              <strong>Left to review:</strong>{" "}
+              {photos.length - (selectedPhotos.length + discardedPhotos.length)}
+            </span>
+          </Col>
+          <Col xs={{ span: 12 }} className={`${(selectedPhotos.length + discardedPhotos.length) === photos.length ? "visible" : "invisible"}`}>
+            <Button
+              variant="info"
+              className="text-white"
+              onClick={handleSendClick}
+              disabled={
+                !(
+                  photos.length ===
+                  selectedPhotos.length + discardedPhotos.length
+                ) || loading
+              }
+            >
+              Confirm review
+            </Button>
+          </Col>
+        </Row>
       )}
       {photos && (
         <SRLWrapper>
