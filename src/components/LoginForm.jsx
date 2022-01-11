@@ -20,7 +20,6 @@ const LoginForm = () => {
       setLoading(true);
       await login(data.email, data.password);
       navigate("/");
-      
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -28,7 +27,7 @@ const LoginForm = () => {
   };
 
   return (
-    <Form className="w-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+    <Form className="w-md-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <Alert variant="danger">
           <strong>Error!</strong>
@@ -54,14 +53,16 @@ const LoginForm = () => {
         />
       </Form.Group>
 
-      <Button
-        type="submit"
-        variant="info"
-        className="text-white my-3"
-        disabled={loading}
-      >
-        Log in
-      </Button>
+      <div className="text-center">
+        <Button
+          type="submit"
+          variant="info"
+          className="text-white my-3"
+          disabled={loading}
+        >
+          Log in
+        </Button>
+      </div>
     </Form>
   );
 };

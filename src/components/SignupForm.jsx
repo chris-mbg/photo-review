@@ -24,7 +24,6 @@ const SignupForm = () => {
       setLoading(true);
       await signup(data.email, data.password);
       navigate("/");
-      
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -32,7 +31,7 @@ const SignupForm = () => {
   };
 
   return (
-    <Form className="w-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+    <Form className="w-md-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
       {error && (
         <Alert variant="danger">
           <strong>Error!</strong>
@@ -66,15 +65,17 @@ const SignupForm = () => {
           {...register("confirmPassword", { required: true })}
         />
       </Form.Group>
-
-      <Button
-        type="submit"
-        variant="info"
-        className="text-white my-3"
-        disabled={loading}
-      >
-        Sign up
-      </Button>
+      
+      <div className="text-center">
+        <Button
+          type="submit"
+          variant="info"
+          className="text-white my-3"
+          disabled={loading}
+        >
+          Sign up
+        </Button>
+      </div>
     </Form>
   );
 };

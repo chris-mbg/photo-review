@@ -46,3 +46,16 @@ body {
 .trash-hover:hover {
   color: #dc3545;
 }
+
+#login-tabs-nav {
+
+
+  .nav-link {
+    color: #212529;
+    cursor: pointer;
+  }
+  .nav-link.active {
+    background-color: #0dcaf0;
+    color: #fff;
+  }
+}
