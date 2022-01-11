@@ -3,8 +3,10 @@ import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
 import useModal from "../hooks/useModal";
 import ReviewGrid from "../components/ReviewGrid";
 import useReviewAlbum from "../hooks/useReviewAlbum";
-import Alert from "react-bootstrap/Alert";
 import Modal from "react-bootstrap/Modal";
+import Alert from "react-bootstrap/Alert";
+import ErrorAlert from "../components/ErrorAlert";
+import LoadingAlert from "../components/LoadingAlert";
 
 const ReviewAlbumPage = () => {
   const { viewId } = useParams();
@@ -12,14 +14,11 @@ const ReviewAlbumPage = () => {
   const createAlbum = useCreateNewAlbum();
   const { show, handleShow, handleClose } = useModal();
 
-  console.log(albumQuery.data);
-
   const handleReviewConfirm = async (selectedP) => {
     const newAlbumName =
       albumQuery.data[0].name +
       "_" +
       new Date().toLocaleString("sv-SV").slice(0, -3);
-    console.log(newAlbumName);
 
     await createAlbum.create(newAlbumName, selectedP, {
       review: true,
@@ -31,23 +30,11 @@ const ReviewAlbumPage = () => {
   };
 
   if (albumQuery.isError) {
-    return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        {albumQuery.error}
-      </Alert>
-    );
+    return <ErrorAlert errMsg={albumQuery.error}/>;
   }
+
   if (albumQuery.isLoading) {
-    return (
-      <Alert variant="warning">
-        <p>
-          <strong>Loading...</strong>
-        </p>
-      </Alert>
-    );
+    return <LoadingAlert />
   }
 
   return (
@@ -73,12 +60,7 @@ const ReviewAlbumPage = () => {
         </Modal.Header>
         <Modal.Body className="text-center">
           {createAlbum.error ? (
-            <Alert variant="danger">
-              <p>
-                <strong>Error!</strong>
-              </p>
-              {createAlbum.error}
-            </Alert>
+            <ErrorAlert errMsg={createAlbum.error} />
           ) : (
             <Alert variant="success">
               <p>

@@ -9,9 +9,10 @@ import { db } from "../firebase";
 import { collection, addDoc, serverTimestamp, doc } from "firebase/firestore";
 import { v4 as uuid } from "uuid";
 import Alert from "react-bootstrap/Alert";
+import ErrorAlert from "./ErrorAlert";
 
 const AddNewAlbum = () => {
-  const preselectedImages = null
+  const preselectedImages = null;
 
   const [showAlbumForm, setShowAlbumForm] = useState(false);
 
@@ -38,7 +39,6 @@ const AddNewAlbum = () => {
       console.log("doc ref", docRef);
       setLoading(false);
       navigate(`/album/${docRef.id}`);
-
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -58,12 +58,7 @@ const AddNewAlbum = () => {
           <span className="ms-2">Add New Album</span>
         </Button>
       </div>
-      {error && (
-        <Alert variant="danger">
-          <strong>Error!</strong>
-          <p>{error}</p>
-        </Alert>
-      )}
+      {error && <ErrorAlert errMsg={error} />}
       {showAlbumForm && (
         <AddNewAlbumForm loading={loading} submitFunc={handleAddNewSubmit} />
       )}

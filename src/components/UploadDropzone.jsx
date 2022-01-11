@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 //import useUploadPhoto from "../hooks/useUploadPhoto";
 import useUploadPhotos from "../hooks/useUploadPhotos";
+import ErrorAlert from "./ErrorAlert";
 
 const UploadDropzone = ({ albumId }) => {
   const uploadPhotos = useUploadPhotos(albumId);
@@ -85,7 +86,7 @@ const UploadDropzone = ({ albumId }) => {
       )}
 
       {uploadPhotos.isError && (
-        <Alert variant="warning">{uploadPhotos.error}</Alert>
+        <ErrorAlert errMsg={uploadPhotos.error} />
       )}
       {uploadPhotos.isSuccess && <Alert variant="success">Uploaded!</Alert>}
     </div>

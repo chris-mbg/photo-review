@@ -35,12 +35,8 @@ const useCreateNewAlbum = () => {
         reviewed: [],
       });
 
-      console.log("doc ref", docRef);
-
       // When reviewing --> add timestamp to the reviewed album
       if (reviewOptions.review) {
-        console.log("Adding review timestamp...")
-        console.log("review opts", reviewOptions)
         const albumRef = doc(db, "albums", reviewOptions.reviewedAlbumId);
         await updateDoc(albumRef, { reviewed: arrayUnion(new Date().toLocaleString("sv-SV")) });
       }

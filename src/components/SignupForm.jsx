@@ -5,6 +5,7 @@ import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import ErrorAlert from "./ErrorAlert";
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -33,10 +34,7 @@ const SignupForm = () => {
   return (
     <Form className="w-md-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
       {error && (
-        <Alert variant="danger">
-          <strong>Error!</strong>
-          <p>{error}</p>
-        </Alert>
+        <ErrorAlert errMsg={error}/>
       )}
 
       <Form.Group className="mb-3" controlId="signupInput2">
@@ -65,7 +63,7 @@ const SignupForm = () => {
           {...register("confirmPassword", { required: true })}
         />
       </Form.Group>
-      
+
       <div className="text-center">
         <Button
           type="submit"

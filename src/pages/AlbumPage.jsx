@@ -6,6 +6,8 @@ import AlbumInfo from "../components/AlbumInfo";
 import PhotoGrid from "../components/PhotoGrid";
 import PhotoUpload from "../components/PhotoUpload";
 import { useAuthContext } from "../contexts/AuthContext";
+import ErrorAlert from "../components/ErrorAlert";
+import LoadingAlert from "../components/LoadingAlert";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
@@ -13,23 +15,10 @@ const AlbumPage = () => {
   const { currentUser } = useAuthContext();
 
   if (albumQuery.isError) {
-    return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        {albumQuery.error}
-      </Alert>
-    );
+    return <ErrorAlert errMsg={albumQuery.error} />;
   }
   if (albumQuery.isLoading) {
-    return (
-      <Alert variant="warning">
-        <p>
-          <strong>Loading...</strong>
-        </p>
-      </Alert>
-    );
+    return <LoadingAlert />;
   }
 
   if (albumQuery.data === undefined) {
@@ -42,12 +31,7 @@ const AlbumPage = () => {
 
   if (albumQuery.data.owner !== currentUser.uid) {
     return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        This album does not belong to you...
-      </Alert>
+      <ErrorAlert errMsg="This album does not belong to you..." />
     );
   }
 
@@ -57,7 +41,7 @@ const AlbumPage = () => {
 
       {albumQuery.data && (
         <PhotoUpload numOfPhotos={albumQuery.data.images.length}>
-          <UploadDropzone albumId={albumId}/>
+          <UploadDropzone albumId={albumId} />
         </PhotoUpload>
       )}
 
