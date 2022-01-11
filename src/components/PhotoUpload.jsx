@@ -17,7 +17,7 @@ const PhotoUpload = ({ children }) => {
           {showDropzone ? (
             <>
               <FontAwesomeIcon icon={faTimes} />
-              <span className="ms-2">Close</span>
+              <span className="ms-2">Close Upload</span>
             </>
           ) : (
             <>

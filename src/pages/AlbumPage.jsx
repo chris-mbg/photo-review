@@ -37,11 +37,17 @@ const AlbumPage = () => {
   }
 
   if(albumQuery.data === undefined) {
+    return (
+      <Alert variant="light">
+        <p>
+          No data...
+        </p>
+      </Alert>
+    )
     // when deleting album
-    navigate("/")
+    //navigate("/")
   }
 
-  
   if (albumQuery.data.owner !== currentUser.uid) {
     return (
       <Alert variant="danger">

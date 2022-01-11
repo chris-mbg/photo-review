@@ -1,16 +1,6 @@
 import { useState } from "react";
-import { storage, db } from "../firebase";
-import { ref, deleteObject } from "firebase/storage";
-import {
-  doc,
-  deleteDoc,
-  query,
-  where,
-  collection,
-  getDoc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+import { db } from "../firebase";
+import { doc, deleteDoc, getDoc } from "firebase/firestore";
 import { useAuthContext } from "../contexts/AuthContext";
 import useDeletePhoto from "./useDeletePhoto";
 
@@ -49,17 +39,12 @@ const useDeleteAlbum = () => {
         console.log("PromisesArr", promises);
       });
       console.log("After forEach, before promises.all");
-      Promise.all(promises)
-        .then(async () => {
-          // delete album doc when all photos are deleted from storage/db or not
-          await deleteDoc(albumRef);
-          setIsDeleting(false);
-        })
-        .catch((err) => {
-          setIsError(true);
-          setError(err.message);
-          setIsDeleting(false);
-        });
+      Promise.all(promises).then(async () => {
+        console.log("In then for promise.all");
+        // delete album doc when all photos are deleted from storage/db or not
+        await deleteDoc(albumRef);
+        setIsDeleting(false);
+      });
     } catch (err) {
       setIsError(true);
       setError(err.message);
