@@ -9,6 +9,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 import useDeleteAlbum from "../hooks/useDeleteAlbum";
 import useEditAlbumName from "../hooks/useEditAlbumName";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 const AlbumInfo = ({ albumData }) => {
   const navigate = useNavigate();
@@ -44,42 +46,68 @@ const AlbumInfo = ({ albumData }) => {
   }
 
   return (
-    <>
-      <div className="text-muted d-flex justify-content-end">
-        <div className="border p-2 d-flex flex-column flex-nowrap rounded">
-          <span>{albumData.images.length} photos</span>
-          <span>Created: {serverTimestampConvert(albumData.createdAt)}</span>
-          <span>Reviewed: {albumData.reviewed.length} times</span>
-          <span className="">
-            <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
-            <span className="ms-3 cursor-pointer" onClick={handleCopyLink}>
-              <FontAwesomeIcon icon={faCopy} title="Copy link!"/>
-            </span>
-          </span>
-          <Button
-            size="sm"
-            variant="info"
-            className="text-white"
-            onClick={handleShow}
-            disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+    <div className="d-flex flex-column flex-nowrap">
+      <h1 className="logo-text text-center mb-3 order-lg-2">
+        {albumData.name}
+      </h1>
+      <Col xs={12} lg={{ span: 4, offset: 8 }}>
+        <Row xs={1} sm={2} lg={2} className="text-muted border rounded g-2 p-1">
+          <Col>
+            <Col>
+              <small>{albumData.images.length} photos</small>
+            </Col>
+            <Col>
+              <small>
+                Created: {serverTimestampConvert(albumData.createdAt)}
+              </small>
+            </Col>
+          </Col>
+          <Col>
+            <Col>
+              <small>Reviewed: {albumData.reviewed.length} times</small>
+            </Col>
+            <Col>
+              <small>
+                <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
+                <span className="ms-3 cursor-pointer" onClick={handleCopyLink}>
+                  <FontAwesomeIcon icon={faCopy} title="Copy link!" />
+                </span>
+              </small>
+            </Col>
+          </Col>
+          <Col
+            xs={{ span: 12 }}
+            sm={{ span: 12 }}
+            md={{ span: 12 }}
+            lg={{ span: 12 }}
+            xl={{ span: 12 }}
+            xxl={{ span: 12 }}
           >
-            <FontAwesomeIcon icon={faPen} />
-            <span className="ms-2">Change album name</span>
-          </Button>
-          <Button
-            size="sm"
-            variant="outline-danger"
-            className="mt-2"
-            onClick={handleDeleteAlbum}
-            disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-            <span className="ms-2">Delete album</span>
-          </Button>
-        </div>
-      </div>
-
-      <h1 className="text-center mb-3">{albumData.name}</h1>
+            <div className="d-flex justify-content-between align-items-center">
+              <Button
+                size="sm"
+                variant="outline-info"
+                className=""
+                onClick={handleShow}
+                disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+              >
+                <FontAwesomeIcon icon={faPen} />
+                <span className="ms-2">Change album name</span>
+              </Button>
+              <Button
+                size="sm"
+                variant="outline-danger"
+                className=""
+                onClick={handleDeleteAlbum}
+                disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+              >
+                <FontAwesomeIcon icon={faTrash} />
+                <span className="ms-2">Delete album</span>
+              </Button>
+            </div>
+          </Col>
+        </Row>
+      </Col>
 
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
@@ -94,7 +122,7 @@ const AlbumInfo = ({ albumData }) => {
           />
         </Modal.Body>
       </Modal>
-    </>
+    </div>
   );
 };
 

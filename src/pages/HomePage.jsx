@@ -3,13 +3,11 @@ import AlbumOverview from "../components/AlbumOverview";
 import { useAuthContext } from "../contexts/AuthContext";
 
 const HomePage = () => {
-  const { currentUser } = useAuthContext();
-
   return (
     <>
       <AddNewAlbum />
 
-      <hr className="border-top border-info my-4"/>
+      <hr className="border-top border-info my-4" />
 
       <AlbumOverview />
     </>

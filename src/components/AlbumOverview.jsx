@@ -17,23 +17,22 @@ const AlbumOverview = () => {
     e.stopPropagation()
     console.log("delete me album");
     await deleteAlbum.destroy(albumId);
-    //navigate("/");
   };
 
   return (
     <>
-      <h2 className="text-center">Album overview</h2>
+      <h2 className="text-center logo-text">Album overview</h2>
 
       {albumsQuery.data && (
         <ListGroup variant="flush" className="mt-3">
           {albumsQuery.data.length ? (
             <>
               <ListGroup.Item variant="light">
-                <Row className="text-black fw-light">
-                  <Col>Name</Col>
-                  <Col className="text-center">Number of photos</Col>
-                  <Col>Created at</Col>
-                  <Col md={1}></Col>
+                <Row className="text-muted fw-light text-uppercase extra-small-text">
+                  <Col xs={4} md={5} lg={6}>Name</Col>
+                  <Col className="text-center">Photos</Col>
+                  <Col>Created</Col>
+                  <Col xs={1}></Col>
                 </Row>
               </ListGroup.Item>
               {albumsQuery.data.map((a, i) => (
@@ -45,11 +44,11 @@ const AlbumOverview = () => {
                   onClick={() => navigate(`/album/${a._id}`)}
                 >
                   <Row>
-                    <Col className="fw-bold">{a.name}</Col>
+                    <Col xs={4} md={5} lg={6} className="fw-bold">{a.name}</Col>
                     <Col className="text-center">{a.images.length}</Col>
                     <Col>{serverTimestampConvert(a.createdAt)}</Col>
-                    <Col md={1}>
-                      <div className="d-flex justify-content-center text-muted">
+                    <Col xs={1} className="d-flex justify-content-center align-items-center text-muted">
+                      <div >
                         {/* <FontAwesomeIcon icon={faPen} className="text-dark" /> */}
                         <FontAwesomeIcon
                           icon={faTrash}

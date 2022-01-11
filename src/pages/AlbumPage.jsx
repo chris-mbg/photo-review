@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useAlbum from "../hooks/useAlbum";
 import Alert from "react-bootstrap/Alert";
 import UploadDropzone from "../components/UploadDropzone";
@@ -11,10 +11,6 @@ const AlbumPage = () => {
   const { albumId } = useParams();
   const albumQuery = useAlbum(albumId);
   const { currentUser } = useAuthContext();
-  const navigate = useNavigate()
-
-  console.log("album data", albumQuery);
-
 
   if (albumQuery.isError) {
     return (
@@ -36,16 +32,12 @@ const AlbumPage = () => {
     );
   }
 
-  if(albumQuery.data === undefined) {
+  if (albumQuery.data === undefined) {
     return (
       <Alert variant="light">
-        <p>
-          No data...
-        </p>
+        <p>No data...</p>
       </Alert>
-    )
-    // when deleting album
-    //navigate("/")
+    );
   }
 
   if (albumQuery.data.owner !== currentUser.uid) {
@@ -63,9 +55,11 @@ const AlbumPage = () => {
     <>
       {albumQuery.data && <AlbumInfo albumData={albumQuery.data} />}
 
-      <PhotoUpload>
-        <UploadDropzone albumId={albumId} />
-      </PhotoUpload>
+      {albumQuery.data && (
+        <PhotoUpload numOfPhotos={albumQuery.data.images.length}>
+          <UploadDropzone albumId={albumId}/>
+        </PhotoUpload>
+      )}
 
       {albumQuery.data && !albumQuery.data.images.length && (
         <Alert variant="info" className="text-center">
