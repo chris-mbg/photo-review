@@ -18,7 +18,7 @@ const AddNewAlbumForm = ({ preselectedImages, editMode = false, albumName, submi
 
   return (
     <>
-      <Form className="w-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+      <Form className="mx-auto" onSubmit={handleSubmit(onSubmit)}>
 
         <Form.Group className="mb-3" controlId="albumInput1">
           <Form.Label>{editMode ? "New Album Name" : "Album name"}</Form.Label>
@@ -29,7 +29,7 @@ const AddNewAlbumForm = ({ preselectedImages, editMode = false, albumName, submi
           />
         </Form.Group>
 
-        <div className="d-flex justify-content-end">
+        <div className="text-center">
           <Button
             type="submit"
             variant="info"

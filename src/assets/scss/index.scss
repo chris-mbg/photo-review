@@ -8,6 +8,12 @@ body {
 .logo-text {
   font-family: "Permanent Marker", cursive;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
+.extra-small-text {
+  font-size: 0.75rem;
+}
 
 #dropzone {
   width: 75%;
@@ -38,4 +44,21 @@ body {
 .card-img-top {
   aspect-ratio: 1;
   object-fit: cover;
+}
+
+.trash-hover:hover {
+  color: #dc3545;
+}
+
+#login-tabs-nav {
+
+
+  .nav-link {
+    color: #212529;
+    cursor: pointer;
+  }
+  .nav-link.active {
+    background-color: #0dcaf0;
+    color: #fff;
+  }
 }

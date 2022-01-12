@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
-import useReviewAlbum from "../hooks/useReviewAlbum";
-import Alert from "react-bootstrap/Alert";
-import Modal from "react-bootstrap/Modal";
-import ReviewGrid from "../components/ReviewGrid";
 import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
 import useModal from "../hooks/useModal";
+import useReviewAlbum from "../hooks/useReviewAlbum";
+import ReviewGrid from "../components/ReviewGrid";
+import Alert from "react-bootstrap/Alert";
+import ErrorAlert from "../components/ErrorAlert";
+import LoadingAlert from "../components/LoadingAlert";
+import ModalComponent from "../components/ModalComponent";
+import InfoAlert from "../components/InfoAlert";
 
 const ReviewAlbumPage = () => {
   const { viewId } = useParams();
@@ -12,14 +15,11 @@ const ReviewAlbumPage = () => {
   const createAlbum = useCreateNewAlbum();
   const { show, handleShow, handleClose } = useModal();
 
-  console.log(albumQuery.data);
-
   const handleReviewConfirm = async (selectedP) => {
     const newAlbumName =
       albumQuery.data[0].name +
       "_" +
       new Date().toLocaleString("sv-SV").slice(0, -3);
-    console.log(newAlbumName);
 
     await createAlbum.create(newAlbumName, selectedP, {
       review: true,
@@ -27,66 +27,54 @@ const ReviewAlbumPage = () => {
       reviewedAlbumOwner: albumQuery.data[0].owner,
     });
 
-    handleShow(true)
+    handleShow(true);
   };
 
   if (albumQuery.isError) {
-    return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        {albumQuery.error}
-      </Alert>
-    );
+    return <ErrorAlert errMsg={albumQuery.error} />;
   }
+
   if (albumQuery.isLoading) {
-    return (
-      <Alert variant="warning">
-        <p>
-          <strong>Loading...</strong>
-        </p>
-      </Alert>
-    );
+    return <LoadingAlert />;
   }
 
   return (
     <>
       {albumQuery.data && (
         <>
-          <h1>Let's review!</h1>
-          <p>
-            Choose which photos from {albumQuery.data[0].name} you like best!
+          <h1 className="logo-text text-center">Let's review!</h1>
+          <p className="text-center text-secondary">
+            <small>
+            Choose which photos from {albumQuery.data[0].name} you want to keep.
+            </small>
           </p>
-          <ReviewGrid
-            photos={albumQuery.data[0].images}
-            onReviewSend={handleReviewConfirm}
-            loading={createAlbum.loading}
-          />
+          {albumQuery.data[0].images.length !== 0 ? (
+            <ReviewGrid
+              photos={albumQuery.data[0].images}
+              onReviewSend={handleReviewConfirm}
+              loading={createAlbum.loading}
+            />
+          ) : (
+            <InfoAlert msg="No photos to review... Sure you got the right link?" />
+          )}
         </>
       )}
-      
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="text-center">Review confirm</Modal.Title>
-        </Modal.Header>
-        <Modal.Body className="text-center">
-          {createAlbum.error ? (
-            <Alert variant="danger">
-              <p>
-                <strong>Error!</strong>
-              </p>
-              {createAlbum.error}
-            </Alert>
-          ) : (
-            <Alert variant="success">
-              <p>
-                Your review of the album {albumQuery.data[0].name} is now sent!
-              </p>
-            </Alert>
-          )}
-        </Modal.Body>
-      </Modal>
+
+      <ModalComponent
+        title="Review confirm"
+        show={show}
+        handleClose={handleClose}
+      >
+        {createAlbum.error ? (
+          <ErrorAlert errMsg={createAlbum.error} />
+        ) : (
+          <Alert variant="success">
+            <p>
+              Your review of the album {albumQuery.data[0].name} is now sent!
+            </p>
+          </Alert>
+        )}
+      </ModalComponent>
     </>
   );
 };

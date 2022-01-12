@@ -1,10 +1,10 @@
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Alert from "react-bootstrap/Alert";
 import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import ErrorAlert from "./ErrorAlert";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ const LoginForm = () => {
       setLoading(true);
       await login(data.email, data.password);
       navigate("/");
-      
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -28,12 +27,9 @@ const LoginForm = () => {
   };
 
   return (
-    <Form className="w-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+    <Form className="w-md-50 mx-auto" onSubmit={handleSubmit(onSubmit)}>
       {error && (
-        <Alert variant="danger">
-          <strong>Error!</strong>
-          <p>{error}</p>
-        </Alert>
+        <ErrorAlert errMsg={error} />
       )}
       <Form.Group className="mb-3" controlId="loginInput1">
         <Form.Label>Email address</Form.Label>
@@ -54,14 +50,16 @@ const LoginForm = () => {
         />
       </Form.Group>
 
-      <Button
-        type="submit"
-        variant="info"
-        className="text-white my-3"
-        disabled={loading}
-      >
-        Log in
-      </Button>
+      <div className="text-center">
+        <Button
+          type="submit"
+          variant="info"
+          className="text-white my-3"
+          disabled={loading}
+        >
+          Log in
+        </Button>
+      </div>
     </Form>
   );
 };

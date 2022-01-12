@@ -1,83 +1,121 @@
+import { Link, useNavigate } from "react-router-dom";
 import { serverTimestampConvert } from "../utils/serverTimestampConvert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPen } from "@fortawesome/free-solid-svg-icons";
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
-import useModal from "../hooks/useModal";
-import AddNewAlbumForm from "./AddNewAlbumForm";
+import { faPen, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
 import { useAuthContext } from "../contexts/AuthContext";
-import { useState } from "react";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase";
-import { Link } from "react-router-dom";
+import useDeleteAlbum from "../hooks/useDeleteAlbum";
+import useModal from "../hooks/useModal";
+import useEditAlbumName from "../hooks/useEditAlbumName";
+import AddNewAlbumForm from "./AddNewAlbumForm";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ModalComponent from "./ModalComponent";
 
 const AlbumInfo = ({ albumData }) => {
-  const { show, handleClose, handleShow } = useModal();
-
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const { currentUser } = useAuthContext();
+  const { show, handleClose, handleShow } = useModal();
+  const editAlbumName = useEditAlbumName();
+  const deleteAlbum = useDeleteAlbum();
 
-  const handleEditAlbumNameSubmit = async (data) => {
-    setError(null);
-    setLoading(true);
-
-    if (albumData.owner !== currentUser.uid) {
-      setError("Not your album to edit");
-      return;
-    }
-
-    try {
-      const albumRef = doc(db, "albums", albumData._id);
-      await updateDoc(albumRef, {
-        name: data.albumName,
-      });
-    } catch (err) {
-      setError(err.message);
-      setLoading(false);
-    } finally {
-      // close modal
-      handleClose();
-    }
+  const handleDeleteAlbum = async () => {
+    await deleteAlbum.destroy(albumData._id);
+    navigate("/");
   };
 
+  const handleEditAlbumNameSubmit = async (data) => {
+    await editAlbumName.edit(albumData._id, data.albumName);
+    handleClose();
+  };
+
+  const handleCopyLink = async () => {
+    await navigator.clipboard.writeText(
+      `${
+        process.env.NODE_ENV === "production"
+          ? "http://photo-review.netlify.app"
+          : "http://localhost:3000"
+      }/view/album/${albumData.viewId}`
+    );
+  };
+
+  if (albumData.owner !== currentUser.uid) {
+    return <p>This album does not belong to you</p>;
+  }
+
   return (
-    <>
-      <div className="text-muted d-flex justify-content-end">
-        <div className="border p-2 d-flex flex-column flex-nowrap rounded">
-          <span>{albumData.images.length} photos</span>
-          <span>Created: {serverTimestampConvert(albumData.createdAt)}</span>
-          <span>Reviewed: {albumData.reviewed.length} times</span>
-          <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
-          <Button
-            size="sm"
-            variant="info"
-            className="text-white"
-            onClick={handleShow}
-          >
-            <FontAwesomeIcon icon={faPen} />
-            <span className="ms-2">Change album name</span>
-          </Button>
-        </div>
-      </div>
+    <div className="d-flex flex-column flex-nowrap mb-3 mb-lg-0">
+      <h1 className="logo-text text-center mb-3 order-lg-2 mt-lg-3">
+        {albumData.name}
+      </h1>
+      <Col xs={12} lg={{ span: 4, offset: 8 }}>
+        <Row xs={1} sm={2} lg={2} className="text-muted border rounded g-2 p-1">
+          <Col>
+            <Col>
+              <small>
+                {albumData.images.length}{" "}
+                {albumData.images.length === 1 ? "photo" : "photos"}
+              </small>
+            </Col>
+            <Col>
+              <small>
+                Created: {serverTimestampConvert(albumData.createdAt)}
+              </small>
+            </Col>
+          </Col>
+          <Col>
+            <Col>
+              <small>Reviewed: {albumData.reviewed.length} times</small>
+            </Col>
+            <Col>
+              <small>
+                <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
+                <span className="ms-3 cursor-pointer" onClick={handleCopyLink}>
+                  <FontAwesomeIcon icon={faCopy} title="Copy link!" />
+                </span>
+              </small>
+            </Col>
+          </Col>
+          <Col xs={{ span: 6 }} sm={{ span: 6 }} >
+            <Button
+              size="sm"
+              variant="outline-info"
+              className=""
+              onClick={handleShow}
+              disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+            >
+              <FontAwesomeIcon icon={faPen} />
+              <span className="ms-2">Edit name</span>
+            </Button>
+          </Col>
+          <Col xs={{ span: 6 }} sm={{ span: 6 }} className="text-end text-sm-start">
+            <Button
+              size="sm"
+              variant="outline-danger"
+              className=""
+              onClick={handleDeleteAlbum}
+              disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+              <span className="ms-2">Delete album</span>
+            </Button>
+          </Col>
+        </Row>
+      </Col>
 
-      <h1 className="text-center mb-3">{albumData.name}</h1>
-
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Change album name</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {error && <p>{error}</p>}
-          <AddNewAlbumForm
-            editMode={true}
-            albumName={albumData.name}
-            submitFunc={handleEditAlbumNameSubmit}
-            loading={loading}
-          />
-        </Modal.Body>
-      </Modal>
-    </>
+      <ModalComponent
+        show={show}
+        onHide={handleClose}
+        title="Change album name"
+      >
+        <AddNewAlbumForm
+          editMode={true}
+          albumName={albumData.name}
+          submitFunc={handleEditAlbumNameSubmit}
+          loading={editAlbumName.isEditing}
+        />
+      </ModalComponent>
+    </div>
   );
 };
 

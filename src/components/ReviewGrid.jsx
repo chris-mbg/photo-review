@@ -1,21 +1,25 @@
+import { useState } from "react";
 import ReviewCard from "./ReviewCard";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import Button from "react-bootstrap/Button";
 import { SRLWrapper } from "simple-react-lightbox";
-import { useState } from "react";
+import ReviewGridInfo from "./ReviewGridInfo";
 
 const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   const [selectedPhotos, setSelectedPhotos] = useState([]);
   const [discardedPhotos, setDiscardedPhotos] = useState([]);
 
+  const existInPhotoArray = (photo, arrToCheck) => {
+    return arrToCheck.find((obj) => obj.imgId === photo.imgId);
+  };
+
   const handleYesClick = (photo) => {
-    if (discardedPhotos.find((obj) => obj.imgId === photo.imgId)) {
+    if (existInPhotoArray(photo, discardedPhotos)) {
       setDiscardedPhotos(
         discardedPhotos.filter((obj) => obj.imgId !== photo.imgId)
       );
     }
-    if (selectedPhotos.find((obj) => obj.imgId === photo.imgId)) {
+    if (existInPhotoArray(photo, selectedPhotos)) {
       setSelectedPhotos(
         selectedPhotos.filter((obj) => obj.imgId !== photo.imgId)
       );
@@ -25,12 +29,12 @@ const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   };
 
   const handleNoClick = (photo) => {
-    if (selectedPhotos.find((obj) => obj.imgId === photo.imgId)) {
+    if (existInPhotoArray(photo, selectedPhotos)) {
       setSelectedPhotos(
         selectedPhotos.filter((obj) => obj.imgId !== photo.imgId)
       );
     }
-    if (discardedPhotos.find((obj) => obj.imgId === photo.imgId)) {
+    if (existInPhotoArray(photo, discardedPhotos)) {
       setDiscardedPhotos(
         discardedPhotos.filter((obj) => obj.imgId !== photo.imgId)
       );
@@ -50,45 +54,29 @@ const ReviewGrid = ({ photos, onReviewSend, loading }) => {
   return (
     <>
       {photos && (
-        <div>
-          <p>Info</p>
-          <p>
-            Liked: {selectedPhotos.length} of {photos.length}
-          </p>
-          <p>
-            Left to review:{" "}
-            {photos.length - (selectedPhotos.length + discardedPhotos.length)}
-          </p>
+        <>
+          <ReviewGridInfo onSendClick={handleSendClick} total={photos.length} yesPhotos={selectedPhotos.length} noPhotos={discardedPhotos.length} />
 
-          <Button
-            variant="info"
-            onClick={handleSendClick}
-            disabled={
-              !(photos.length === selectedPhotos.length + discardedPhotos.length) || loading
-            }
-          >
-            Confirm review
-          </Button>
-        </div>
-      )}
-      {photos && (
-        <SRLWrapper>
-          <Row xs={2} md={3} xl={4} className="g-4">
-            {photos.map((p) => (
-              <Col key={p.imgId}>
-                <ReviewCard
-                  photo={p}
-                  onYesClick={handleYesClick}
-                  onNoClick={handleNoClick}
-                  selected={selectedPhotos.find((obj) => obj.imgId === p.imgId)}
-                  deselected={discardedPhotos.find(
-                    (obj) => obj.imgId === p.imgId
-                  )}
-                />
-              </Col>
-            ))}
-          </Row>
-        </SRLWrapper>
+          <SRLWrapper>
+            <Row xs={2} md={3} xl={4} xxl={5} className="g-4">
+              {photos.map((p) => (
+                <Col key={p.imgId}>
+                  <ReviewCard
+                    photo={p}
+                    onYesClick={handleYesClick}
+                    onNoClick={handleNoClick}
+                    selected={selectedPhotos.find(
+                      (obj) => obj.imgId === p.imgId
+                    )}
+                    deselected={discardedPhotos.find(
+                      (obj) => obj.imgId === p.imgId
+                    )}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </SRLWrapper>
+        </>
       )}
     </>
   );

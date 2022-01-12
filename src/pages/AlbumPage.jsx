@@ -6,42 +6,33 @@ import AlbumInfo from "../components/AlbumInfo";
 import PhotoGrid from "../components/PhotoGrid";
 import PhotoUpload from "../components/PhotoUpload";
 import { useAuthContext } from "../contexts/AuthContext";
+import ErrorAlert from "../components/ErrorAlert";
+import LoadingAlert from "../components/LoadingAlert";
+import InfoAlert from "../components/InfoAlert";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
   const albumQuery = useAlbum(albumId);
   const { currentUser } = useAuthContext();
 
-  console.log("album data", albumQuery);
-
   if (albumQuery.isError) {
-    return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        {albumQuery.error}
-      </Alert>
-    );
+    return <ErrorAlert errMsg={albumQuery.error} />;
   }
   if (albumQuery.isLoading) {
+    return <LoadingAlert />;
+  }
+
+  if (albumQuery.data === undefined) {
     return (
-      <Alert variant="warning">
-        <p>
-          <strong>Loading...</strong>
-        </p>
+      <Alert variant="light">
+        <p>No data...</p>
       </Alert>
     );
   }
 
   if (albumQuery.data.owner !== currentUser.uid) {
     return (
-      <Alert variant="danger">
-        <p>
-          <strong>Error!</strong>
-        </p>
-        This album does not belong to you...
-      </Alert>
+      <ErrorAlert errMsg="This album does not belong to you..." />
     );
   }
 
@@ -49,17 +40,17 @@ const AlbumPage = () => {
     <>
       {albumQuery.data && <AlbumInfo albumData={albumQuery.data} />}
 
-      <PhotoUpload>
-        <UploadDropzone albumId={albumId} />
-      </PhotoUpload>
+      {albumQuery.data && (
+        <PhotoUpload numOfPhotos={albumQuery.data.images.length}>
+          <UploadDropzone albumId={albumId} />
+        </PhotoUpload>
+      )}
 
       {albumQuery.data && !albumQuery.data.images.length && (
-        <Alert variant="info" className="text-center">
-          No photos added to this album yet...
-        </Alert>
+        <InfoAlert msg="No photos in this album, add some!" />
       )}
       {albumQuery.data && albumQuery.data.images.length > 0 && (
-        <PhotoGrid photos={albumQuery.data.images} />
+        <PhotoGrid photos={albumQuery.data.images} albumId={albumId} />
       )}
     </>
   );

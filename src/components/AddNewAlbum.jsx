@@ -1,17 +1,18 @@
-import Button from "react-bootstrap/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import AddNewAlbumForm from "./AddNewAlbumForm";
-import { useAuthContext } from "../contexts/AuthContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { db } from "../firebase";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import AddNewAlbumForm from "./AddNewAlbumForm";
+import ErrorAlert from "./ErrorAlert";
+import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 import { v4 as uuid } from "uuid";
-import Alert from "react-bootstrap/Alert";
 
 const AddNewAlbum = () => {
-  const preselectedImages = null
+  const preselectedImages = null;
 
   const [showAlbumForm, setShowAlbumForm] = useState(false);
 
@@ -35,10 +36,8 @@ const AddNewAlbum = () => {
         reviewed: [],
       });
 
-      console.log("doc ref", docRef);
       setLoading(false);
       navigate(`/album/${docRef.id}`);
-
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -58,14 +57,11 @@ const AddNewAlbum = () => {
           <span className="ms-2">Add New Album</span>
         </Button>
       </div>
-      {error && (
-        <Alert variant="danger">
-          <strong>Error!</strong>
-          <p>{error}</p>
-        </Alert>
-      )}
+      {error && <ErrorAlert errMsg={error} />}
       {showAlbumForm && (
-        <AddNewAlbumForm loading={loading} submitFunc={handleAddNewSubmit} />
+        <Col lg={{ span: 8, offset: 2 }} xl={{ span: 6, offset: 3 }}>
+          <AddNewAlbumForm loading={loading} submitFunc={handleAddNewSubmit} />
+        </Col>
       )}
     </>
   );

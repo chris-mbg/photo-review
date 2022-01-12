@@ -1,11 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import Modal from "react-bootstrap/Modal";
 import useModal from "../hooks/useModal";
-import AddNewAlbumForm from "./AddNewAlbumForm";
 import useCreateNewAlbum from "../hooks/useCreateNewAlbum";
-import { useNavigate } from "react-router-dom";
+import AddNewAlbumForm from "./AddNewAlbumForm";
+import ModalComponent from "./ModalComponent";
+import ErrorAlert from "./ErrorAlert";
 
 const AddNewFromSelected = ({ preselectedPhotos }) => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const AddNewFromSelected = ({ preselectedPhotos }) => {
 
   const handleNewFromSelectedSubmit = async (data) => {
     const docRef = await create(data.albumName, preselectedPhotos);
-
     navigate(`/album/${docRef.id}`);
   };
 
@@ -34,22 +34,21 @@ const AddNewFromSelected = ({ preselectedPhotos }) => {
         </Button>
       </div>
 
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Make a new album with the selected photos</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {error ? (
-            <>{error}</>
-          ) : (
-            <AddNewAlbumForm
-              submitFunc={handleNewFromSelectedSubmit}
-              loading={loading}
-              preselectedImages={preselectedPhotos}
-            />
-          )}
-        </Modal.Body>
-      </Modal>
+      <ModalComponent
+        show={show}
+        onHide={handleClose}
+        title="Make a new album with the selected photos"
+      >
+        {error ? (
+          <ErrorAlert errMsg={error} />
+        ) : (
+          <AddNewAlbumForm
+            submitFunc={handleNewFromSelectedSubmit}
+            loading={loading}
+            preselectedImages={preselectedPhotos}
+          />
+        )}
+      </ModalComponent>
     </>
   );
 };
