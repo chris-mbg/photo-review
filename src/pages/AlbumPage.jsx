@@ -8,6 +8,7 @@ import PhotoUpload from "../components/PhotoUpload";
 import { useAuthContext } from "../contexts/AuthContext";
 import ErrorAlert from "../components/ErrorAlert";
 import LoadingAlert from "../components/LoadingAlert";
+import InfoAlert from "../components/InfoAlert";
 
 const AlbumPage = () => {
   const { albumId } = useParams();
@@ -46,9 +47,7 @@ const AlbumPage = () => {
       )}
 
       {albumQuery.data && !albumQuery.data.images.length && (
-        <Alert variant="info" className="text-center">
-          No photos in this album, add some!
-        </Alert>
+        <InfoAlert msg="No photos in this album, add some!" />
       )}
       {albumQuery.data && albumQuery.data.images.length > 0 && (
         <PhotoGrid photos={albumQuery.data.images} albumId={albumId} />

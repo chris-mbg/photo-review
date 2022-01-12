@@ -8,6 +8,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import AddNewAlbumForm from "./AddNewAlbumForm";
 import ErrorAlert from "./ErrorAlert";
 import Button from "react-bootstrap/Button";
+import Col from "react-bootstrap/Col";
 import { v4 as uuid } from "uuid";
 
 const AddNewAlbum = () => {
@@ -58,7 +59,9 @@ const AddNewAlbum = () => {
       </div>
       {error && <ErrorAlert errMsg={error} />}
       {showAlbumForm && (
-        <AddNewAlbumForm loading={loading} submitFunc={handleAddNewSubmit} />
+        <Col lg={{ span: 8, offset: 2 }} xl={{ span: 6, offset: 3 }}>
+          <AddNewAlbumForm loading={loading} submitFunc={handleAddNewSubmit} />
+        </Col>
       )}
     </>
   );

@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import useDeleteAlbum from "../hooks/useDeleteAlbum";
+import InfoAlert from "./InfoAlert";
 
 const AlbumOverview = () => {
   const albumsQuery = useAlbums();
@@ -61,7 +62,7 @@ const AlbumOverview = () => {
               ))}
             </>
           ) : (
-            <p>No albums yet... Add one!</p>
+            <InfoAlert msg="No albums yet... Add one!" />
           )}
         </ListGroup>
       )}

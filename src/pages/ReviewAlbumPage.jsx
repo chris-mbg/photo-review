@@ -7,6 +7,7 @@ import Alert from "react-bootstrap/Alert";
 import ErrorAlert from "../components/ErrorAlert";
 import LoadingAlert from "../components/LoadingAlert";
 import ModalComponent from "../components/ModalComponent";
+import InfoAlert from "../components/InfoAlert";
 
 const ReviewAlbumPage = () => {
   const { viewId } = useParams();
@@ -45,12 +46,15 @@ const ReviewAlbumPage = () => {
           <p className="text-center">
             Choose which photos from {albumQuery.data[0].name} you want to keep.
           </p>
-
-          <ReviewGrid
-            photos={albumQuery.data[0].images}
-            onReviewSend={handleReviewConfirm}
-            loading={createAlbum.loading}
-          />
+          {albumQuery.data[0].images.length !== 0 ? (
+            <ReviewGrid
+              photos={albumQuery.data[0].images}
+              onReviewSend={handleReviewConfirm}
+              loading={createAlbum.loading}
+            />
+          ) : (
+            <InfoAlert msg="No photos to review... Sure you got the right link?" />
+          )}
         </>
       )}
 
