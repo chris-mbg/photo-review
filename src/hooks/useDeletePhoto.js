@@ -34,10 +34,10 @@ const useDeletePhoto = () => {
       const albumsQueryRef = query(albumsColRef, where("images", "array-contains", photo))
       const albumsQuerySnap = await getDocs(albumsQueryRef)
 
-      // If no albumId the destroy process "belongs" to a deleteAlbum process and not neccessary to filter out anything from the album.
+      // If no albumId the destroy process "belongs" to a deleteAlbum process and it is not neccessary to filter out anything from the album images-array.
       if(albumId) {
         // delete from current album (if deleting only photo and not entire album)
-        const albumRef = doc(db, "albums",albumId)
+        const albumRef = doc(db, "albums", albumId)
         const albumDoc = await getDoc(albumRef)
 
         const newImagesArr = albumDoc.data().images.filter(p => p.imgId !== photo.imgId)
@@ -51,8 +51,6 @@ const useDeletePhoto = () => {
 
         await deleteDoc(imgDocRef)
       }
-
-      setIsDeleting(false)
 
     } catch (err) {
       setIsError(true)

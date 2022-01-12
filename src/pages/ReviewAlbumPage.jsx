@@ -43,8 +43,10 @@ const ReviewAlbumPage = () => {
       {albumQuery.data && (
         <>
           <h1 className="logo-text text-center">Let's review!</h1>
-          <p className="text-center">
+          <p className="text-center text-secondary">
+            <small>
             Choose which photos from {albumQuery.data[0].name} you want to keep.
+            </small>
           </p>
           {albumQuery.data[0].images.length !== 0 ? (
             <ReviewGrid

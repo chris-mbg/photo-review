@@ -41,7 +41,7 @@ const Navigation = () => {
                     className="text-center"
                   >
                     <small>
-                      Logged in: <br /> {currentUser.email}
+                      {currentUser.email}
                     </small>
                   </NavDropdown.Item>
                   <NavDropdown.Divider />

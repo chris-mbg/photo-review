@@ -41,8 +41,8 @@ const useDeleteAlbum = () => {
       Promise.all(promises).then(async () => {
         // delete album doc when all photos are deleted from storage/db or not
         await deleteDoc(albumRef);
-        setIsDeleting(false);
-      });
+      })
+      
     } catch (err) {
       setIsError(true);
       setError(err.message);

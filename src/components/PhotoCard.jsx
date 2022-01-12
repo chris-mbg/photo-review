@@ -7,17 +7,15 @@ import useDeletePhoto from "../hooks/useDeletePhoto";
 const PhotoCard = ({ photo, albumId, selected, onButtonClick }) => {
   const { destroy, isError, error, isDeleting } = useDeletePhoto();
 
-  const handlePhotoDeleteClick = async () => {
-    await destroy(photo, albumId);
-  };
+  const handlePhotoDeleteClick = async () => await destroy(photo, albumId)
 
   return (
     <Card>
       <Card.Header>
         {isError ? (
-          <small className="text-danger text-center">Error: {error}</small>
+          <small className="text-danger">Error: {error}</small>
         ) : isDeleting ? (
-          <small className="text-warning text-center">Deleting photo...</small>
+          <small className="text-secondary">Deleting photo...</small>
         ) : (
           <div className="d-flex justify-content-between">
             <Button

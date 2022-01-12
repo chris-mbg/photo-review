@@ -44,7 +44,7 @@ const AlbumInfo = ({ albumData }) => {
   }
 
   return (
-    <div className="d-flex flex-column flex-nowrap">
+    <div className="d-flex flex-column flex-nowrap mb-3 mb-lg-0">
       <h1 className="logo-text text-center mb-3 order-lg-2 mt-lg-3">
         {albumData.name}
       </h1>
@@ -76,36 +76,29 @@ const AlbumInfo = ({ albumData }) => {
               </small>
             </Col>
           </Col>
-          <Col
-            xs={{ span: 12 }}
-            sm={{ span: 12 }}
-            md={{ span: 12 }}
-            lg={{ span: 12 }}
-            xl={{ span: 12 }}
-            xxl={{ span: 12 }}
-          >
-            <div className="d-flex justify-content-between align-items-center">
-              <Button
-                size="sm"
-                variant="outline-info"
-                className=""
-                onClick={handleShow}
-                disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
-              >
-                <FontAwesomeIcon icon={faPen} />
-                <span className="ms-2">Change album name</span>
-              </Button>
-              <Button
-                size="sm"
-                variant="outline-danger"
-                className=""
-                onClick={handleDeleteAlbum}
-                disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                <span className="ms-2">Delete album</span>
-              </Button>
-            </div>
+          <Col xs={{ span: 6 }} sm={{ span: 6 }} >
+            <Button
+              size="sm"
+              variant="outline-info"
+              className=""
+              onClick={handleShow}
+              disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+            >
+              <FontAwesomeIcon icon={faPen} />
+              <span className="ms-2">Edit name</span>
+            </Button>
+          </Col>
+          <Col xs={{ span: 6 }} sm={{ span: 6 }} className="text-end text-sm-start">
+            <Button
+              size="sm"
+              variant="outline-danger"
+              className=""
+              onClick={handleDeleteAlbum}
+              disabled={deleteAlbum.isDeleting || editAlbumName.isEditing}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+              <span className="ms-2">Delete album</span>
+            </Button>
           </Col>
         </Row>
       </Col>
