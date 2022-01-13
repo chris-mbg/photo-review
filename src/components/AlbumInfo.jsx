@@ -1,3 +1,4 @@
+import { useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
 import { serverTimestampConvert } from "../utils/serverTimestampConvert";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,10 +7,12 @@ import { useAuthContext } from "../contexts/AuthContext";
 import useDeleteAlbum from "../hooks/useDeleteAlbum";
 import useModal from "../hooks/useModal";
 import useEditAlbumName from "../hooks/useEditAlbumName";
-import AddNewAlbumForm from "./AddNewAlbumForm";
 import Button from "react-bootstrap/Button";
+import Overlay from "react-bootstrap/Overlay";
+import Tooltip from "react-bootstrap/Tooltip";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import AddNewAlbumForm from "./AddNewAlbumForm";
 import ModalComponent from "./ModalComponent";
 
 const AlbumInfo = ({ albumData }) => {
@@ -18,6 +21,9 @@ const AlbumInfo = ({ albumData }) => {
   const { show, handleClose, handleShow } = useModal();
   const editAlbumName = useEditAlbumName();
   const deleteAlbum = useDeleteAlbum();
+
+  const [showTooltip, setShowTooltip] = useState(false);
+  const target = useRef(null);
 
   const handleDeleteAlbum = async () => {
     await deleteAlbum.destroy(albumData._id);
@@ -37,10 +43,12 @@ const AlbumInfo = ({ albumData }) => {
           : "http://localhost:3000"
       }/view/album/${albumData.viewId}`
     );
+    setShowTooltip(true)
+    setTimeout(() => setShowTooltip(false), 2000)
   };
 
   if (albumData.owner !== currentUser.uid) {
-    return <p>This album does not belong to you</p>;
+    return <p>This album does not belong to you!</p>;
   }
 
   return (
@@ -65,18 +73,33 @@ const AlbumInfo = ({ albumData }) => {
           </Col>
           <Col>
             <Col>
-              <small>Reviewed: {albumData.reviewed.length} times</small>
+              <small>
+                Reviewed: {albumData.reviewed.length}{" "}
+                {albumData.reviewed.length === 1 ? "time" : "times"}
+              </small>
             </Col>
             <Col>
               <small>
                 <Link to={`/view/album/${albumData.viewId}`}>Review page</Link>
-                <span className="ms-3 cursor-pointer" onClick={handleCopyLink}>
+                <span className="ms-3 cursor-pointer" ref={target}  onClick={handleCopyLink}>
                   <FontAwesomeIcon icon={faCopy} title="Copy link!" />
+                  <Overlay
+                    target={target.current}
+                    show={showTooltip}
+                    placement="right"
+                    className="bg-success text-white"
+                  >
+                    {(props) => (
+                      <Tooltip id="overlay-example" {...props}>
+                        <span >Copied!</span>
+                      </Tooltip>
+                    )}
+                  </Overlay>
                 </span>
               </small>
             </Col>
           </Col>
-          <Col xs={{ span: 6 }} sm={{ span: 6 }} >
+          <Col xs={{ span: 6 }} sm={{ span: 6 }}>
             <Button
               size="sm"
               variant="outline-info"
@@ -88,7 +111,11 @@ const AlbumInfo = ({ albumData }) => {
               <span className="ms-2">Edit name</span>
             </Button>
           </Col>
-          <Col xs={{ span: 6 }} sm={{ span: 6 }} className="text-end text-sm-start">
+          <Col
+            xs={{ span: 6 }}
+            sm={{ span: 6 }}
+            className="text-end text-sm-start"
+          >
             <Button
               size="sm"
               variant="outline-danger"

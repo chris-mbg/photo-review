@@ -11,6 +11,12 @@ body {
 .cursor-pointer {
   cursor: pointer;
 }
+
+button:disabled {
+  cursor: not-allowed;
+  pointer-events: all !important;
+}
+
 .extra-small-text {
   font-size: 0.75rem;
 }
